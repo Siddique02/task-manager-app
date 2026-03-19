@@ -12,6 +12,8 @@ router.get('/', protect, async (req, res) => {
 
 // Create new task
 router.post('/', protect, async (req, res) => {
+  console.log("hello there");
+  
   const { title, description, status, dueDate } = req.body;
   const task = await Task.create({ title, description, status, dueDate, user: req.user._id });
   res.status(201).json(task);
@@ -36,7 +38,7 @@ router.delete('/:id', protect, async (req, res) => {
   if (task.user.toString() !== req.user._id.toString())
     return res.status(401).json({ message: 'Not authorized' });
 
-  await task.remove();
+  await task.deleteOne();
   res.json({ message: 'Task removed' });
 });
 
